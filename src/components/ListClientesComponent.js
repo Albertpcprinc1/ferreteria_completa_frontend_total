@@ -6,6 +6,10 @@ const ListClientesComponent = () => {
     const [clientes, setClientes] = useState([]);
     
     useEffect(() => {
+        listarClientes()
+    }, []);
+
+    const listarClientes = () => {
         ClienteService.getAllClientes()
             .then(response => {
                 setClientes(response.data);
@@ -13,7 +17,18 @@ const ListClientesComponent = () => {
             .catch(error => {
                 console.log("Error al obtener clientes:", error);    
             });
-    }, []);
+
+    }
+
+    const deleteCliente = (clienteId) => {
+        ClienteService.deleteCliente(clienteId).then((response) => {
+            listarClientes();
+        }).catch(error => {
+            console.log(error);
+        })
+
+
+    }
 
     return (
         <div className='container'>
@@ -26,6 +41,7 @@ const ListClientesComponent = () => {
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Email</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +53,10 @@ const ListClientesComponent = () => {
                             <td>{cliente.nombre}</td>
                             <td>{cliente.apellido}</td>
                             <td>{cliente.email}</td>
+                            <td>
+                                <Link className='btn btn-info' to={`/edit-cliente/${cliente.id}`}>Actualizar</Link>
+                                <button style={{ marginLeft:"10px"}} className='btn btn-danger' onClick={() => deleteCliente(cliente.id)}>Eliminar   </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import ListClientesComponent from './components/ListClientesComponent';
 import HeaderComponent from './components/HeaderComponent';
@@ -15,7 +15,8 @@ function App() {
         <Routes>
           <Route exact path='/' element={<ListClientesComponent/>}></Route>
           <Route path='/clientes' element={<ListClientesComponent/>}></Route>
-          <Route path='/add-cliente' element={<AddClienteComponent/>}></Route> 
+          <Route path='/add-cliente' element={<AddClienteComponent/>}></Route>
+          <Route path='/edit-cliente/:id' element={<AddClienteComponent/>}></Route>  
               
         </Routes>
         </div>
