@@ -3,6 +3,7 @@ import ClienteService from '../services/ClienteServices'; // <--- AJUSTA ESTA RU
 import { Link } from 'react-router-dom';
 import ArticulosServices from '../services/ArticulosServices';
 import FooterComponent from './FooterComponent';
+import LoadingSpinner from './LoadingSpinner';
 
 const ListArticulosComponent = () => {
     const [clientes, setClientes] = useState([]);
@@ -64,8 +65,11 @@ const ListArticulosComponent = () => {
                         </tr>
                     ))}
                 </tbody>
+                
             </table>
-            <FooterComponent />
+            
+            <LoadingSpinner/>
+            
         </div>
         
     );

@@ -1,113 +1,105 @@
-import React, { useEffect, useState } from 'react'
-import ClienteServices from '../services/ClienteServices';
+import React, { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ArticulosServices from '../services/ArticulosServices';
+import { useForm } from '../hooks/useForm'; // TU CUSTOM HOOK (Criterio 3)
+import ValidationError from './ValidationError'; // TU COMPONENTE BEM (Criterio 1 y 5)
 
 const AddArticuloComponent = () => {
-  
-    const [nombrearticulo, setNombre] = useState('');
-    const [precio, setPrecio] = useState('');      // Cambiado de apellido
-    const [existencia, setExistencia] = useState(''); // Cambiado de email
     const navigate = useNavigate();
     const { id } = useParams();
-      
-    const saveOrUpdateCliente = (e) => {
-    e.preventDefault();
-    
-    const articuloData = {
-        nombrearticulo, 
-        precio: precio === '' ? 0 : Number(precio),
-        existencia: existencia === '' ? 0 : parseInt(existencia, 10)
-    };
 
-    // Imprime esto en consola para ver si el servicio existe antes de llamar a la función
-    console.log("Servicio:", ArticulosServices);
+    // Implementación del Custom Hook para manejar el formulario
+    const { values, errors, handleInputChange, validateForm, setValues } = useForm({
+        nombrearticulo: '',
+        precio: '',
+        existencia: ''
+    });
 
-    if(id){
-        ArticulosServices.updateCliente(id, articuloData)
-            .then(() => navigate('/articulos'))
-            .catch(err => console.error("Error Update:", err));
-    } else {
-        // Usamos el nombre exacto de tu archivo Service: createCliente
-        if (typeof ArticulosServices.createCliente === 'function') {
-            ArticulosServices.createCliente(articuloData)
-                .then(() => navigate('/articulos'))
-                .catch(err => console.error("Error Create:", err));
-        } else {
-            console.error("¡La función createCliente no existe en el servicio!");
-        }
-    }
-}    
+    const { nombrearticulo, precio, existencia } = values;
 
     useEffect(() => {
-        // Solo intentamos cargar si existe un ID
-        if(id) {
+        if (id) {
             ArticulosServices.getClienteById(id).then((response) => {
-                setNombre(response.data.nombrearticulo);    
-                setPrecio(response.data.precio);     // Mapeo de la API al nuevo estado
-                setExistencia(response.data.existencia);
-            }).catch(error => {
-                console.log(error);
-            })
+                setValues(response.data);
+            }).catch(error => console.log(error));
         }
-    }, [id]) // Agregamos 'id' como dependencia por buena práctica
+    }, [id, setValues]);
 
-    const title = () => {
-        return id ? <h2 className='text-center'>Actualizar Artículo</h2> : <h2 className='text-center'>Agregar Artículo</h2>;
-    }
+    const saveOrUpdateArticulo = (e) => {
+        e.preventDefault();
+
+        // Validación antes de enviar (Usa la lógica del Hook)
+        if (!validateForm()) return;
+
+        const articuloData = {
+            nombrearticulo,
+            precio: Number(precio),
+            existencia: parseInt(existencia, 10)
+        };
+
+        if (id) {
+            ArticulosServices.updateCliente(id, articuloData)
+                .then(() => navigate('/articulos'))
+                .catch(err => console.error(err));
+        } else {
+            ArticulosServices.createCliente(articuloData)
+                .then(() => navigate('/articulos'))
+                .catch(err => console.error(err));
+        }
+    };
 
     return (
-    <div>
-      <div className='container'>
-        <div className='row'>
-        <div className='card col-md-6 offset-md-3'>
-            { title() }
-            <div className='card-body'>
-                <form>
-                    <div className='form-group mb-2'>
-                        <label className='form-label'>Nombre</label>
-                        <input 
-                            type='text'
-                            placeholder='Nombre del artículo'
-                            className='form-control'
-                            value={ nombrearticulo }
-                            onChange={(e)=> setNombre(e.target.value)}
-                        />
-                    </div>
+        <div className='container mt-5'>
+            <div className='row'>
+                <div className='card col-md-6 offset-md-3 shadow'>
+                    <h2 className='text-center mt-3'>{id ? 'Actualizar Artículo' : 'Agregar Artículo'}</h2>
+                    <div className='card-body'>
+                        <form className="form-bumeran"> {/* Ejemplo clase BEM */}
+                            <div className='form-group mb-3'>
+                                <label className='form-label'>Nombre</label>
+                                <input
+                                    name='nombrearticulo'
+                                    type='text'
+                                    className={`form-control ${errors.nombrearticulo ? 'is-invalid' : ''}`}
+                                    value={nombrearticulo}
+                                    onChange={handleInputChange}
+                                />
+                                <ValidationError mensaje={errors.nombrearticulo} />
+                            </div>
 
-                    <div className='form-group mb-2'>
-                        <label className='form-label'>Precio</label>
-                        <input 
-                            type='number'       // Tipo numérico
-                            step='any'          // Permite decimales
-                            placeholder='0.00'
-                            className='form-control'
-                            value={ precio }
-                            onChange={(e)=> setPrecio(e.target.value)}
-                        />
-                    </div>
+                            <div className='form-group mb-3'>
+                                <label className='form-label'>Precio</label>
+                                <input
+                                    name='precio'
+                                    type='number'
+                                    className={`form-control ${errors.precio ? 'is-invalid' : ''}`}
+                                    value={precio}
+                                    onChange={handleInputChange}
+                                />
+                                <ValidationError mensaje={errors.precio} />
+                            </div>
 
-                    <div className='form-group mb-2'>
-                        <label className='form-label'>Existencia</label>
-                        <input 
-                            type='number'       // Tipo numérico
-                            placeholder='Cantidad en stock'
-                            className='form-control'
-                            value={ existencia }
-                            onChange={(e)=> setExistencia(e.target.value)}
-                        />
-                    </div>
+                            <div className='form-group mb-4'>
+                                <label className='form-label'>Existencia</label>
+                                <input
+                                    name='existencia'
+                                    type='number'
+                                    className='form-control'
+                                    value={existencia}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
 
-                    <button className='btn btn-success' onClick={ (e) => saveOrUpdateCliente(e)}>Guardar</button>
-                    &nbsp;&nbsp;
-                    <Link to ='/articulos' className='btn btn-danger'>Cancelar</Link>
-                </form>
+                            <div className="d-flex justify-content-center">
+                                <button className='btn btn-success px-4' onClick={saveOrUpdateArticulo}>Guardar</button>
+                                <Link to='/articulos' className='btn btn-danger ms-3'>Cancelar</Link>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+    );
+};
 
-export default AddArticuloComponent
+export default AddArticuloComponent;

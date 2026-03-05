@@ -1,11 +1,57 @@
 .footer{
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 50%;
   height: 50px;
   background-color: black;
   text-align: center;
   color: white;
 
 
+}
+
+/* Importar una fuente más moderna */
+@import url('https://fonts.googleapis.com');
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #334155;
+}
+
+/* Redondear las tarjetas y contenedores */
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+/* Estilo para los inputs del formulario que creamos antes */
+.form-control {
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Mejorar los botones */
+.btn {
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  transition: transform 0.1s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Footer elegante */
+.footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 1.5rem 0;
+  color: #64748b;
 }

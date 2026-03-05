@@ -8,16 +8,16 @@ import AddArticuloComponent from './components/AddArticuloComponent';
 import HeaderArticuloComponent from './components/HeaderArticuloComponent';
 import ListArticulosComponent from './components/ListArticulosComponent';
 
-// Componente para manejar la lógica de la interfaz
+
 const AppLayout = ({ children }) => {
-  const location = useLocation(); // Hook oficial para detectar cambios de ruta en tiempo real
+  const location = useLocation(); 
   const esRutaArticulos = location.pathname.includes('articulo');
 
   return (
-    <div className="d-flex flex-column min-vh-100 bg-light"> {/* Fondo gris claro sutil */}
+    <div className="d-flex flex-column min-vh-100 bg-light"> {}
       <header className="sticky-top shadow-sm bg-white">
         <HeaderComponent />
-        {/* Header secundario con transición sutil */}
+        {}
         {esRutaArticulos && (
           <div className="bg-white border-top border-bottom py-2 shadow-sm animate__animated animate__fadeInDown">
             <HeaderArticuloComponent />
@@ -26,13 +26,13 @@ const AppLayout = ({ children }) => {
       </header>
       
       <main className="container flex-grow-1 py-4">
-        {/* El contenido se renderiza aquí */}
+        {}
         <section className="bg-white rounded shadow-sm p-4 border">
           {children}
         </section>
       </main>
 
-      <FooterComponent />
+      
     </div>
   );
 };

@@ -2,15 +2,16 @@ import React from 'react'
 
 const FooterComponent = () => {
   return (
-    <div>
-        <footer className='footer'>
-            <span className='text-muted'>
-                Sistema desarrollado por Ing. Albert Huerta Morales.
-
+    <footer className='footer mt-auto'>
+        <div className='container text-center'>
+            <span className='text-muted small'>
+                &copy; {new Date().getFullYear()} Sistema de Gestión — 
+                <strong> Ing. Albert Huerta Morales</strong>
             </span>
-        </footer>
-    </div>
+        </div>
+    </footer>
   )
 }
+
 
 export default FooterComponent
