@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ClienteService from '../services/ClienteServices'; // <--- AJUSTA ESTA RUTA
 import { Link } from 'react-router-dom';
+import ArticulosServices from '../services/ArticulosServices';
 import FooterComponent from './FooterComponent';
 
-const ListClientesComponent = () => {
+const ListArticulosComponent = () => {
     const [clientes, setClientes] = useState([]);
     
     useEffect(() => {
@@ -11,7 +12,7 @@ const ListClientesComponent = () => {
     }, []);
 
     const listarClientes = () => {
-        ClienteService.getAllClientes()
+        ArticulosServices.getAllClientes()
             .then(response => {
                 setClientes(response.data);
             })
@@ -22,7 +23,7 @@ const ListClientesComponent = () => {
     }
 
     const deleteCliente = (clienteId) => {
-        ClienteService.deleteCliente(clienteId).then((response) => {
+        ArticulosServices.deleteCliente(clienteId).then((response) => {
             listarClientes();
         }).catch(error => {
             console.log(error);
@@ -33,8 +34,8 @@ const ListClientesComponent = () => {
 
     return (
         <div className='container'>
-            <h2 className='text-center'>Lista de Clientes</h2>
-            <Link to ='/add-cliente' className='btn btn-primary mb-2'>Agregar Cliente</Link>
+            <h2 className='text-center'>Lista de Articulos</h2>
+            <Link to ='/add-articulo' className='btn btn-primary mb-2'>Agregar Articulo</Link>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Link to ='/articulos' className='btn btn-primary mb-2'>Inventario</Link>
             <table className='table table-bordered table-striped'>
@@ -42,8 +43,8 @@ const ListClientesComponent = () => {
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
+                        <th>Precios</th>
+                        <th>Existencia</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -53,11 +54,11 @@ const ListClientesComponent = () => {
                         cliente => (
                         <tr key={cliente.id}>
                             <td>{cliente.id}</td>
-                            <td>{cliente.nombre}</td>
-                            <td>{cliente.apellido}</td>
-                            <td>{cliente.email}</td>
+                            <td>{cliente.nombrearticulo}</td>
+                            <td>{cliente.precio}</td>
+                            <td>{cliente.existencia}</td>
                             <td>
-                                <Link className='btn btn-info' to={`/edit-cliente/${cliente.id}`}>Actualizar</Link>
+                                <Link className='btn btn-info' to={`/edit-articulo/${cliente.id}`}>Actualizar</Link>
                                 <button style={{ marginLeft:"10px"}} className='btn btn-danger' onClick={() => deleteCliente(cliente.id)}>Eliminar   </button>
                             </td>
                         </tr>
@@ -70,4 +71,4 @@ const ListClientesComponent = () => {
     );
 }
 
-export default ListClientesComponent;
+export default ListArticulosComponent;
