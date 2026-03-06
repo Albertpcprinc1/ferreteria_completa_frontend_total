@@ -47,7 +47,7 @@ const AddClienteComponent = () => {
             console.log(error);
         })
 
-    },[])
+    },[id])
 
     const title = () => {
         if(id){

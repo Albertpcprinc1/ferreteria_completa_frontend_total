@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ClienteService from '../services/ClienteServices'; // <--- AJUSTA ESTA RUTA
 import { Link } from 'react-router-dom';
 import ArticulosServices from '../services/ArticulosServices';
-import FooterComponent from './FooterComponent';
 import LoadingSpinner from './LoadingSpinner';
 
 const ListArticulosComponent = () => {

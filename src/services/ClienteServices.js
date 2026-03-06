@@ -32,4 +32,5 @@ class ClienteService{
 
 }
 
-export default new ClienteService();
+const clienteServiceInstance = new ClienteService();
+export default clienteServiceInstance;

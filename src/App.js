@@ -2,7 +2,6 @@ import './App.css';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import ListClientesComponent from './components/ListClientesComponent';
 import HeaderComponent from './components/HeaderComponent';
-import FooterComponent from './components/FooterComponent';
 import AddClienteComponent from './components/AddClienteComponent';
 import AddArticuloComponent from './components/AddArticuloComponent';
 import HeaderArticuloComponent from './components/HeaderArticuloComponent';
